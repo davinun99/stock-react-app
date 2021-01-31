@@ -1,7 +1,7 @@
 
 //GraphData expect the data for the stock and canvas context 
 
-const genDataset2 = (labelDates, data) => {
+export const genOldToNewLine = (data) => {
     const initialValue = data[0];
     const finalValue = data[data.length - 1];
     const fun = (x, initial, final, n) => initial * (1-x/n) + final * (x/n) ;
@@ -21,6 +21,22 @@ const genDataset2 = (labelDates, data) => {
         data: lineData
     }
     return dataset;
+}
+export const genCurrentPriceLine = (data) => {
+    const lastPrice = data[data.length - 1];
+    return {
+        type: 'line',
+        pointRadius: 0,
+        fill: false,
+        lineTension: 0,
+        borderWidth: 2,
+        label: 'Current price line',
+        backgroundColor: 'rgb(0, 99, 132)',
+        borderColor: 'rgb(88 , 198, 43)',
+        hoverBackgroundColor: "rgba(255,99,132,0.4)",
+        hoverBorderColor: "rgba(255,99,132,1)",
+        data: data.map( () => lastPrice ),
+    }
 }
 const showMoreData = (labelDates, dataForDates, container) => {
     console.log(container.children[1]);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import apiCall, {mockingData} from '../utils/apiUtils';
+import {genOldToNewLine, genCurrentPriceLine} from '../utils/graphUtils';
 import {Line} from 'react-chartjs-2';
 import ShowMoreData from './ShowMoreData';
 const CanvasContainer = ({symbol}) =>{
@@ -9,8 +10,8 @@ const CanvasContainer = ({symbol}) =>{
     useEffect(() => {
         //FIRST GET THE DATA FOR THE STOCK
         const getData = async () => {
-            const stockDataAPI = await apiCall(symbol);
-            //const stockDataAPI = mockingData(symbol);
+            //const stockDataAPI = await apiCall(symbol);
+            const stockDataAPI = mockingData(symbol);
             setStockData(stockDataAPI);
             const dividedData = Object.entries( stockDataAPI.timeSeries['Time Series (Daily)'] );
             const labelDates = dividedData.map(elmt => elmt[0]).reverse();
@@ -30,7 +31,9 @@ const CanvasContainer = ({symbol}) =>{
                         hoverBackgroundColor: "rgba(255,99,132,0.4)",
                         hoverBorderColor: "rgba(255,99,132,1)",
                         data: dataForDates  
-                    }
+                    },
+                    genOldToNewLine(dataForDates),
+                    genCurrentPriceLine(dataForDates),
                 ]
             });
         }
