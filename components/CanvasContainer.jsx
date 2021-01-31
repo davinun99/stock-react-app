@@ -9,8 +9,8 @@ const CanvasContainer = ({symbol}) =>{
     useEffect(() => {
         //FIRST GET THE DATA FOR THE STOCK
         const getData = async () => {
-            //const stockData = await apiCall(symbol);
-            const stockDataAPI = mockingData(symbol);
+            const stockData = await apiCall(symbol);
+            //const stockDataAPI = mockingData(symbol);
             setStockData(stockDataAPI);
             const dividedData = Object.entries( stockDataAPI.timeSeries['Time Series (Daily)'] );
             const labelDates = dividedData.map(elmt => elmt[0]).reverse();
