@@ -7,7 +7,7 @@ const PortfolioGraph = ({assets}) => {
     useEffect(() => {
         const getData = async () => {
             let stocks = [];
-            assets.forEach( ({symbol}, index) => {
+            assets.forEach( async ({symbol}, index) => {
                 //const stockDataAPI = mockingData(symbol);
                 const stockDataAPI = await apiCall(symbol, false);
                 stocks[index] = stockDataAPI ;
