@@ -4,19 +4,23 @@
 //FINAL CONSTANT
 const apiKey = 'OBGOGP4LNRC54O4U';
 
-const apiCall = async (symbol) => {
+const apiCall = async (symbol, company = true) => {
     //Call the API and save the response in localStorage to use the mock
     const apiUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${apiKey}`;
     const apiCompanyUrl = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=${apiKey}`;
     
     const response = await fetch(apiUrl);
     const objRes = await response.json();
+    let objResCo = null;
+    if(company){
+        const responseCo = await fetch(apiCompanyUrl);
+        objResCo = await responseCo.json();
+    }
     
-    const responseCo = await fetch(apiCompanyUrl);
-    const objResCo = await responseCo.json();
     if (typeof window !== "undefined") {
         localStorage.setItem(symbol + 'Data', JSON.stringify(objRes));
-        localStorage.setItem(symbol + 'Co', JSON.stringify(objResCo));
+        if(company)
+            localStorage.setItem(symbol + 'Co', JSON.stringify(objResCo));
     }
     return {
         timeSeries: objRes, 

@@ -8,8 +8,8 @@ const PortfolioGraph = ({assets}) => {
         const getData = async () => {
             let stocks = [];
             assets.forEach( ({symbol}, index) => {
-                const stockDataAPI = mockingData(symbol);
-                //const stockDataAPI = await apiCall(symbol);
+                //const stockDataAPI = mockingData(symbol);
+                const stockDataAPI = await apiCall(symbol, false);
                 stocks[index] = stockDataAPI ;
             });
             setStockData(stocks);
