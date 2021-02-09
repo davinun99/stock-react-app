@@ -3,54 +3,22 @@ import apiCall, {mockingData} from '../../utils/apiUtils';
 
 const PortfolioGraph = ({assets}) => {
     const [dataToDisplay, setDataToDisplay] = useState(null);
-    const cleanData = (stocks) => {
-        let total = 0;
-        console.log(stocks);        
-        stocks.forEach((stock,index) => {
-            console.log(stock);
-            if( typeof stock.timeSeries['Time Series (Daily)'] === 'object' ){
-                const dividedData = Object.entries( stock.timeSeries['Time Series (Daily)'] );
-                const dataForDates = dividedData.map(elmt => elmt[1]['4. close']);
-                total += dataForDates[0] * assets[index].amount;
-            }
-            console.log(total);    
-        });
-        
-        const totalInvested = assets.reduce( (sum, it) => (sum + it.price), 0 );
-        const daysPass = Math.abs( new Date() - assets[0].dateBought ) / 1000 / 60 / 60 / 24 ;
-        const currentGrowthPerDay = (total - totalInvested)/daysPass;
-        const obj = {
-            currentAmount: total,
-            totalInvested: totalInvested,
-            growthRate: (total - totalInvested)/total,
-            daysPass: parseInt(daysPass),
-            gainsTillToday: total - totalInvested,
-            sixMonthGrowth: currentGrowthPerDay * 180,
-            oneYearGrowth: currentGrowthPerDay * 365,
-        }
-        setDataToDisplay(obj);
-    }
 
     useEffect(() => {
-        const getData = () => {
-            let stocks = [];
+        const getData = async() => {
             let total = 0;
             for (let i = 0; i < assets.length; i++) {
-                apiCall(assets[i].symbol, false).then( result => {
-                const stock = result;
-                if( typeof stock.timeSeries['Time Series (Daily)'] === 'object' ){
-                    const dividedData = Object.entries( stock.timeSeries['Time Series (Daily)'] );
-                    const dataForDates = dividedData.map(elmt => elmt[1]['4. close']);
-                    total += dataForDates[0] * assets[i].amount;
-                    console.log(total);
+                try {
+                    const result = await apiCall(assets[i].symbol, false);
+                    const stock = result;
+                    if( typeof stock.timeSeries['Time Series (Daily)'] === 'object' ){
+                        const dividedData = Object.entries( stock.timeSeries['Time Series (Daily)'] );
+                        const dataForDates = dividedData.map(elmt => elmt[1]['4. close']);
+                        total += dataForDates[0] * assets[i].amount;
+                    }
+                } catch (error) {
+                    console.log(error);
                 }
-                }, error => {
-                    console.log(error);
-                    stocks[i] = null;
-                }).catch(error => {
-                    console.log(error);
-                    stocks[i] = null;
-                });
             }
             const totalInvested = assets.reduce( (sum, it) => (sum + it.price), 0 );
             const daysPass = Math.abs( new Date() - assets[0].dateBought ) / 1000 / 60 / 60 / 24 ;
