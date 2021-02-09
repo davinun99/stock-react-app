@@ -10,8 +10,8 @@ const CanvasContainer = ({symbol}) =>{
     useEffect(() => {
         //FIRST GET THE DATA FOR THE STOCK
         const getData = async () => {
-            //const stockDataAPI = await apiCall(symbol);
-            const stockDataAPI = mockingData(symbol);
+            const stockDataAPI = await apiCall(symbol);
+            //const stockDataAPI = mockingData(symbol);
             setStockData(stockDataAPI);
             if( typeof stockDataAPI.timeSeries['Time Series (Daily)'] === 'object' ){
                 const dividedData = Object.entries( stockDataAPI.timeSeries['Time Series (Daily)'] );
