@@ -30,7 +30,9 @@ const PortfolioGraph = ({assets}) => {
                 daysPass: parseInt(daysPass),
                 gainsTillToday: total - totalInvested,
                 sixMonthGrowth: currentGrowthPerDay * 180,
+                sixMonthGrowthPercent: (currentGrowthPerDay * 180 + total - totalInvested)/total,
                 oneYearGrowth: currentGrowthPerDay * 365,
+                oneYearGrowthPercent: (currentGrowthPerDay * 365 + total - totalInvested)/total,
             }
             setDataToDisplay(obj);
         }
@@ -50,8 +52,8 @@ const PortfolioGraph = ({assets}) => {
                                 <p>Started in {assets[0].dateBought.toLocaleDateString()} with {dataToDisplay.totalInvested}$</p>
                                 <p>Growth {dataToDisplay.growthRate.toFixed(2)} % in {dataToDisplay.daysPass} days</p>
                                 <p>Gains untill today: {dataToDisplay.gainsTillToday.toFixed(2)}$</p>
-                                <p>Gains in six months: {dataToDisplay.sixMonthGrowth.toFixed(2)}$</p>
-                                <p>Gains in one year: {dataToDisplay.oneYearGrowth.toFixed(2)}$</p>
+                                <p>Gains in six months: {dataToDisplay.sixMonthGrowth.toFixed(2)}$ ({dataToDisplay.sixMonthGrowthPercent.toFixed(2)}%)</p>
+                                <p>Gains in one year: {dataToDisplay.oneYearGrowth.toFixed(2)}$ ({dataToDisplay.oneYearGrowthPercent.toFixed(2)}%)</p>
                             </div>
                         </div>    
                     </div>
